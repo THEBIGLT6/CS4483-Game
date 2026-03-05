@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
+  companyName: LiamMayaMatt
   productName: CS4483
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -700,7 +700,7 @@ PlayerSettings:
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: CS4483
-  metroPackageVersion: 
+  metroPackageVersion: 1.0.0.0
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
@@ -708,7 +708,7 @@ PlayerSettings:
   metroCertificateNotAfter: 0000000000000000
   metroApplicationDescription: CS4483
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: CS4483
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0

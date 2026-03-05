@@ -20,8 +20,11 @@ public class PlayerCam : MonoBehaviour
 
     private void Update()
     {
-        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
+        GameSettings settings = SettingsManager.Instance.GetSettings();
+        float sensMultiplier = settings.mouseSensitivity;
+
+        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX * sensMultiplier;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY * sensMultiplier;
 
         yRotation += mouseX;
         xRotation -= mouseY;

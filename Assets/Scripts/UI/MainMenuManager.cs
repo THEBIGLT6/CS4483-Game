@@ -31,9 +31,10 @@ public class MainMenuManager : MonoBehaviour
     }
 
     // Button functions
-    public void startGame()
+    public void startGame( int selectedStage )
     {
         SceneManager.LoadScene(1);
+        GameManager.Instance.setStage( selectedStage );
     }
 
     public void openLeaderboard()
@@ -54,10 +55,30 @@ public class MainMenuManager : MonoBehaviour
         m_levelSelect.SetActive( true );
 
         // Set Button status based on progress
-        m_stage1Button.interactable = true;
+        m_stage1Button.interactable = false;
         m_stage2Button.interactable = false;
         m_stage3Button.interactable = false;
         m_stage4Button.interactable = false;
+
+        for ( int i = 1; i <= GameManager.Instance.getMaxStageUnlocked(); i++ )
+        {
+            switch (i)
+            {
+                case 1:
+                    m_stage1Button.interactable = true;
+                    break;
+                case 2:
+                    m_stage2Button.interactable = true;
+                    break;
+                case 3:
+                    m_stage3Button.interactable = true;
+                    break;
+                case 4:
+                    m_stage4Button.interactable = true;
+                    break;
+            }
+        }
+        
     }
 
     public void backToMainMenu()
@@ -70,9 +91,12 @@ public class MainMenuManager : MonoBehaviour
 
     public void quitGame()
     {
+        GameManager.Instance.Save();
+
         Application.Quit();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
+
     }
 }

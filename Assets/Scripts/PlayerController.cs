@@ -1,3 +1,4 @@
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -20,6 +21,9 @@ public class PlayerController : MonoBehaviour
     public LayerMask whatIsGround;
     bool grounded;
 
+    [Header("Spawning")]
+    [SerializeField] private Transform[] spawnPoints;
+
     public Transform orientation;
 
     float horizontalInput;
@@ -34,6 +38,16 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+
+        // Spawn player at the correct spawn point, nothing should happen in test scene
+        if (spawnPoints.Length > 0 && GameManager.Instance != null)
+        {
+            int currentStage = GameManager.Instance.getCurrentStage();
+            if (currentStage == 0) currentStage = 1;                    // Work around for when just loading into Level1 not through the menu
+
+            rb.position = spawnPoints[currentStage - 1].position;
+        }
+
     }
 
     private void Update()

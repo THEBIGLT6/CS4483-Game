@@ -20,8 +20,6 @@ public class EnemyController : MonoBehaviour
         target = FindObjectByTag("Target").transform;
         agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
-        mat = GetComponent<Renderer>().material;
-        m_Color = mat.color;
     }
 
     private void Update()

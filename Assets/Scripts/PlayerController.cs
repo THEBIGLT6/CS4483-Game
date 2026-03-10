@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
+    public KeyCode sprintKey = KeyCode.LeftShift;
 
     [Header("Ground Check")]
     public float playerHeight;
@@ -23,6 +24,7 @@ public class PlayerController : MonoBehaviour
 
     float horizontalInput;
     float verticalInput;
+    bool sprinting;
 
     Vector3 moveDirection;
 
@@ -55,6 +57,7 @@ public class PlayerController : MonoBehaviour
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
+        sprinting = Input.GetKey(sprintKey);
 
         if(Input.GetKeyDown(jumpKey) && readyToJump && grounded)
         {
@@ -70,9 +73,15 @@ public class PlayerController : MonoBehaviour
     {
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
         if(grounded)
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+            if(sprinting)
+                rb.AddForce(moveDirection.normalized * moveSpeed * 10f * 1.5f, ForceMode.Force);
+            else
+                rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
         else if(!grounded)
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+            if(sprinting)
+                rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier * 1.5f, ForceMode.Force );
+            else
+                rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
     }
 
     private void SpeedControl()

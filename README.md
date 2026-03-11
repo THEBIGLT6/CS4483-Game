@@ -12,6 +12,7 @@ Liam Truss
 ## Resources
 
 Blood Splatter - https://assetstore.unity.com/packages/2d/textures-materials/blood-splatter-decal-package-7518 \
+Door Sound FX - https://www.youtube.com/watch?v=OohvbnXhtXA - https://www.youtube.com/watch?v=jSH3a5kzGgE \
 Fire - https://assetstore.unity.com/packages/vfx/particles/fire-explosions/free-fire-vfx-266227 \
 Guns - https://assetstore.unity.com/packages/3d/props/guns/guns-pack-low-poly-guns-collection-192553 \
 Gun SoundFX - https://assetstore.unity.com/packages/audio/sound-fx/weapons/post-apocalypse-guns-demo-33515 \

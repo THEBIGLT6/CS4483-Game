@@ -11,6 +11,9 @@ public class RaycastShooting : MonoBehaviour
     public WeaponSO weapon;
     public LayerMask enemyLayer;
     public Color damageColor;
+    public ParticleSystem muzzleFlash;
+    public TrailRenderer bulletTracer;
+    public Transform muzzlePoint; 
 
     private bool reloading = false;
 
@@ -40,25 +43,43 @@ public class RaycastShooting : MonoBehaviour
 
     void ShootRaycast()
     {
-        Vector3 direction = transform.forward;
+        Vector3 direction = Camera.main.transform.forward;
+
+        // Muzzle flash
+        if (muzzleFlash != null)
+            muzzleFlash.Play();
+
+        // Bullet tracer
+        if (bulletTracer != null && muzzlePoint != null)
+            StartCoroutine(SpawnTracer(muzzlePoint.position, direction));
         
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, weapon.maxDistance, enemyLayer);
-        
+        Debug.Log("Colliders found: " + hitColliders.Length);
+
         foreach (var collider in hitColliders)
         {
             //Debug.Log("Object in overlapSphere: " + collider.name);
             
             Vector3 toTarget = collider.transform.position - transform.position;
             float angle = Vector3.Angle(direction, toTarget);
-            if (angle < weapon.coneAngle+5) //+5 degrees of tolerance because we are only counting from the center of the object
+            Debug.Log("Angle to " + collider.name + ": " + angle);
+            if (angle < weapon.coneAngle+15) //+5 degrees of tolerance because we are only counting from the center of the object
             {
-                //Debug.Log("Object in cone: " + collider.name);
-                EnemyController enemy = collider.GetComponent<EnemyController>();
-                
-                Vector3 knockbackDirection = toTarget.normalized;
-                
-                enemy.rb.AddForce(knockbackDirection * weapon.knockbackForce, ForceMode.Impulse);
-                
+                Debug.Log("Object in cone: " + collider.name);
+                EnemyController enemy = collider.GetComponentInParent<EnemyController>();
+                Debug.Log("Enemy component found: " + (enemy != null) + " on: " + collider.name);
+
+                if (enemy == null) continue; //ignoring the "agent in enemycontroller is null for now
+
+                Debug.Log("Hit: " + collider.name);
+                enemy.TakeDamage(weapon.damage);
+                Debug.Log("Zombie HP: " + enemy.getHP());
+                Debug.Log(weapon.damage);
+                if (enemy !=null){
+                    Vector3 knockbackDirection = toTarget.normalized;
+                    
+                    enemy.rb.AddForce(knockbackDirection * weapon.knockbackForce, ForceMode.Impulse);
+                }
                 StartCoroutine(DamageAgent(enemy));
             }
         }
@@ -66,7 +87,7 @@ public class RaycastShooting : MonoBehaviour
     
     IEnumerator DamageAgent(EnemyController enemy)
     {
-        enemy.agent.isStopped = true;
+        //enemy.agent.isStopped = true;
         enemy.mat.DOColor(damageColor, 0.1f);
         
         yield return new WaitForSeconds(0.1f);
@@ -74,10 +95,10 @@ public class RaycastShooting : MonoBehaviour
         enemy.rb.velocity = Vector3.zero;
         enemy.rb.angularVelocity = Vector3.zero;
         
-        enemy.agent.ResetPath();
-        enemy.agent.isStopped = false;
-        enemy.mat.DOColor(enemy.m_Color, 0.1f);
-        enemy.hp -= weapon.damage;
+        //enemy.agent.ResetPath();
+        //enemy.agent.isStopped = false;
+        //enemy.mat.DOColor(enemy.m_Color, 0.1f);
+        //enemy.hp -= weapon.damage;
     }
     
     private IEnumerator ReloadGun(WeaponSO weapon)
@@ -93,4 +114,24 @@ public class RaycastShooting : MonoBehaviour
         weapon.ammo = weapon.magazineSize;
         reloading = false;
     }
+
+    IEnumerator SpawnTracer(Vector3 origin, Vector3 direction)
+{
+    TrailRenderer tracer = Instantiate(bulletTracer, origin, Quaternion.identity);
+    tracer.transform.position = origin;
+    
+    Vector3 endPoint = origin + direction * weapon.maxDistance;
+    float distance = Vector3.Distance(origin, endPoint);
+    float remainingDistance = distance;
+    
+    while (remainingDistance > 0)
+    {
+        tracer.transform.position = Vector3.Lerp(origin, endPoint, 1 - (remainingDistance / distance));
+        remainingDistance -= Time.deltaTime * 100f;
+        yield return null;
+    }
+    
+    tracer.transform.position = endPoint;
+    Destroy(tracer.gameObject, tracer.time);
+}
 }

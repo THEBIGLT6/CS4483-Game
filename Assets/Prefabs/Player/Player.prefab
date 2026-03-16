@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7657073477936677667}
   - component: {fileID: 1256919289828409076}
+  - component: {fileID: 712333788618276174}
   m_Layer: 0
   m_Name: CameraHolder
   m_TagString: Untagged
@@ -46,6 +47,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraPosition: {fileID: 4913609333567076441}
+--- !u!114 &712333788618276174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 749996220119774875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8957679f4815e94badf6bb93e330bc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ammoText: {fileID: 0}
+  reloadSlider: {fileID: 0}
+  weapon: {fileID: 11400000, guid: 466acd3738b8e6745bc66dd2794f070f, type: 2}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  damageColor: {r: 0.7169812, g: 0.13302477, b: 0.13302477, a: 0}
 --- !u!1 &867326671482619108
 GameObject:
   m_ObjectHideFlags: 0

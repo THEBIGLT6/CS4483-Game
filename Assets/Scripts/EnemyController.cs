@@ -5,7 +5,7 @@ using UnityEngine.AI;
 public class EnemyController : MonoBehaviour
 {
     public Transform target;
-    public int hp = 3;
+    private int hp;
 
     [HideInInspector]
     public NavMeshAgent agent;
@@ -17,6 +17,7 @@ public class EnemyController : MonoBehaviour
     public Color m_Color;
     private void Start()
     {
+        hp = 3;
         target = FindObjectByTag("Target").transform;
         agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
@@ -24,7 +25,7 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
-        agent.SetDestination(target.position);
+        //agent.SetDestination(target.position);
 
         if (hp <= 0)
         {
@@ -37,4 +38,15 @@ public class EnemyController : MonoBehaviour
         GameObject obj = GameObject.FindWithTag(tag);
         return obj;
     }
+
+    public void TakeDamage(int damage)
+    {
+    hp -= damage;
+    Debug.Log($"Enemy {name} took {damage}. HP now: {hp}");
+    }
+
+    public int getHP(){
+        return hp;
+    }
+
 }

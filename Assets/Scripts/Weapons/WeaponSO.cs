@@ -7,8 +7,11 @@ public class WeaponSO : ScriptableObject
     public float coneAngle = 30f;
     public float maxDistance = 10f;
     public float knockbackForce = 10f;
-    public int damage;
-    public float reloadTime;
-    public int magazineSize = 5;
-    public int ammo = 5;
+    public int damage = 25;
+    public float reloadTime = 1.8f;
+    public int magazineSize = 30;
+    public int ammo = 90;
+    public float headShotMultiplier = 2.5f; // Damage multiplier for headshots 
+    public float fireRate = 0.15f; //seconds between each shot
+
 }

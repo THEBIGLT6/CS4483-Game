@@ -41,8 +41,8 @@ public class EnemyController : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-    hp -= damage;
-    Debug.Log($"Enemy {name} took {damage}. HP now: {hp}");
+        hp -= damage;
+        //Debug.Log($"Enemy {name} took {damage}. HP now: {hp}");
     }
 
     public int getHP(){

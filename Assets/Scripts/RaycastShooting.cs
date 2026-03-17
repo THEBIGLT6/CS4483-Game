@@ -8,42 +8,64 @@ public class RaycastShooting : MonoBehaviour
 {
     public TMP_Text ammoText;
     public Slider reloadSlider;
-    public WeaponSO weapon;
+    private WeaponSO weapon;
     public LayerMask enemyLayer;
     public Color damageColor;
-    public ParticleSystem muzzleFlash;
     public TrailRenderer bulletTracer;
+    public ParticleSystem muzzleFlash;
     public Transform muzzlePoint; 
 
     private bool reloading = false;
+    [SerializeField] private Transform gunAttatchPoint;
+    private GameObject weaponModel;
 
     private void Start()
     {
-        weapon.ammo = weapon.magazineSize;
+        if( weapon != null )
+        {
+            weapon.ammo = weapon.magazineSize;
+        }
+
+        reloadSlider.gameObject.SetActive(false);
     }
 
     void Update()
     {
-        Debug.DrawRay(transform.position, transform.forward * weapon.maxDistance, Color.white);
-        Debug.DrawRay(transform.position, Quaternion.Euler(0, weapon.coneAngle, 0) * transform.forward * weapon.maxDistance, Color.magenta);
-        Debug.DrawRay(transform.position, Quaternion.Euler(0, -weapon.coneAngle, 0) * transform.forward * weapon.maxDistance, Color.magenta);
+        //Debug.DrawRay(transform.position, transform.forward * weapon.maxDistance, Color.white);
+        //Debug.DrawRay(transform.position, Quaternion.Euler(0, weapon.coneAngle, 0) * transform.forward * weapon.maxDistance, Color.magenta);
+        //Debug.DrawRay(transform.position, Quaternion.Euler(0, -weapon.coneAngle, 0) * transform.forward * weapon.maxDistance, Color.magenta);
         
-        if (Input.GetButtonDown("Fire1") && weapon.ammo >= 1)
+        if( weapon != null )
         {
-            weapon.ammo--;
-            ShootRaycast();
+            if (Input.GetButtonDown("Fire1") && weapon.ammo >= 1)
+            {
+                weapon.ammo--;
+                ShootRaycast();
+            }
+            else if (weapon.ammo <= 0 && !reloading)
+            {
+                StartCoroutine(ReloadGun(weapon));
+            }
+
+            ammoText.text = weapon.ammo + "/" + weapon.magazineSize;
         }
-        else if (weapon.ammo <= 0 && !reloading)
+        else
         {
-            StartCoroutine(ReloadGun(weapon));
+            ammoText.text = "";
         }
-        
-        ammoText.text = weapon.ammo + "/" + weapon.magazineSize;
+
+
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            EquipWeapon(weapon);
+        }
     }
 
     void ShootRaycast()
     {
         Vector3 direction = Camera.main.transform.forward;
+
+        MusicManager.Instance.playOneShot( weapon.shootSound );
 
         // Muzzle flash
         if (muzzleFlash != null)
@@ -54,7 +76,7 @@ public class RaycastShooting : MonoBehaviour
             StartCoroutine(SpawnTracer(muzzlePoint.position, direction));
         
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, weapon.maxDistance, enemyLayer);
-        Debug.Log("Colliders found: " + hitColliders.Length);
+        //Debug.Log("Colliders found: " + hitColliders.Length);
 
         foreach (var collider in hitColliders)
         {
@@ -62,19 +84,19 @@ public class RaycastShooting : MonoBehaviour
             
             Vector3 toTarget = collider.transform.position - transform.position;
             float angle = Vector3.Angle(direction, toTarget);
-            Debug.Log("Angle to " + collider.name + ": " + angle);
+            //Debug.Log("Angle to " + collider.name + ": " + angle);
             if (angle < weapon.coneAngle+15) //+5 degrees of tolerance because we are only counting from the center of the object
             {
-                Debug.Log("Object in cone: " + collider.name);
+                //Debug.Log("Object in cone: " + collider.name);
                 EnemyController enemy = collider.GetComponentInParent<EnemyController>();
-                Debug.Log("Enemy component found: " + (enemy != null) + " on: " + collider.name);
+                //Debug.Log("Enemy component found: " + (enemy != null) + " on: " + collider.name);
 
                 if (enemy == null) continue; //ignoring the "agent in enemycontroller is null for now
 
-                Debug.Log("Hit: " + collider.name);
+                //Debug.Log("Hit: " + collider.name);
                 enemy.TakeDamage(weapon.damage);
-                Debug.Log("Zombie HP: " + enemy.getHP());
-                Debug.Log(weapon.damage);
+                //Debug.Log("Zombie HP: " + enemy.getHP());
+                //Debug.Log(weapon.damage);
                 if (enemy !=null){
                     Vector3 knockbackDirection = toTarget.normalized;
                     
@@ -92,8 +114,12 @@ public class RaycastShooting : MonoBehaviour
         
         yield return new WaitForSeconds(0.1f);
         
-        enemy.rb.velocity = Vector3.zero;
-        enemy.rb.angularVelocity = Vector3.zero;
+        if( enemy.rb != null )
+        {
+            enemy.rb.velocity = Vector3.zero;
+            enemy.rb.angularVelocity = Vector3.zero;
+        }
+
         
         //enemy.agent.ResetPath();
         //enemy.agent.isStopped = false;
@@ -116,22 +142,45 @@ public class RaycastShooting : MonoBehaviour
     }
 
     IEnumerator SpawnTracer(Vector3 origin, Vector3 direction)
-{
-    TrailRenderer tracer = Instantiate(bulletTracer, origin, Quaternion.identity);
-    tracer.transform.position = origin;
-    
-    Vector3 endPoint = origin + direction * weapon.maxDistance;
-    float distance = Vector3.Distance(origin, endPoint);
-    float remainingDistance = distance;
-    
-    while (remainingDistance > 0)
     {
-        tracer.transform.position = Vector3.Lerp(origin, endPoint, 1 - (remainingDistance / distance));
-        remainingDistance -= Time.deltaTime * 100f;
-        yield return null;
+        TrailRenderer tracer = Instantiate(bulletTracer, origin, Quaternion.identity);
+        tracer.transform.position = origin;
+        
+        Vector3 endPoint = origin + direction * weapon.maxDistance;
+        float distance = Vector3.Distance(origin, endPoint);
+        float remainingDistance = distance;
+        
+        while (remainingDistance > 0)
+        {
+            tracer.transform.position = Vector3.Lerp(origin, endPoint, 1 - (remainingDistance / distance));
+            remainingDistance -= Time.deltaTime * 100f;
+            yield return null;
+        }
+        
+        tracer.transform.position = endPoint;
+        Destroy(tracer.gameObject, tracer.time);
     }
-    
-    tracer.transform.position = endPoint;
-    Destroy(tracer.gameObject, tracer.time);
-}
+
+    public void EquipWeapon(WeaponSO newWeapon)
+    {
+        // Destroy old model
+        if (weaponModel != null)
+        {
+            Destroy(weaponModel);
+        }
+
+        // Set new data
+        weapon = newWeapon;
+        weapon.ammo = weapon.magazineSize;
+        weaponModel = Instantiate( newWeapon.weaponPrefab, gunAttatchPoint );
+        weaponModel.transform.localPosition = Vector3.zero;
+        weaponModel.transform.localRotation = Quaternion.identity;
+
+        muzzleFlash = weaponModel.GetComponentInChildren<ParticleSystem>();
+        foreach (Transform child in weaponModel.transform)
+        {
+            if (child.CompareTag("MuzzlePoint")) muzzlePoint = child;
+        }
+
+    }
 }

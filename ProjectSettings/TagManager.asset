@@ -8,6 +8,8 @@ TagManager:
   - Target
   - HingePoint
   - Zombie
+  - GunAttachPoint
+  - MuzzlePoint
   layers:
   - Default
   - TransparentFX

@@ -18,6 +18,7 @@ public class RaycastShooting : MonoBehaviour
     private bool reloading = false;
     [SerializeField] private Transform gunAttatchPoint;
     private GameObject weaponModel;
+    private bool hideWeapon;
 
     private void Start()
     {
@@ -27,6 +28,7 @@ public class RaycastShooting : MonoBehaviour
         }
 
         reloadSlider.gameObject.SetActive(false);
+        hideWeapon = false;
     }
 
     void Update()
@@ -182,5 +184,25 @@ public class RaycastShooting : MonoBehaviour
             if (child.CompareTag("MuzzlePoint")) muzzlePoint = child;
         }
 
+        if( hideWeapon ) weaponModel.SetActive(false);
+
+    }
+
+    void OnDisable()
+    {
+        hideWeapon = true;
+        if (weaponModel != null)
+        {
+            weaponModel.SetActive(false);
+        }
+    }
+
+    void OnEnable()
+    {
+        hideWeapon = false;
+        if (weaponModel != null)
+        {
+            weaponModel.SetActive(true);
+        }
     }
 }

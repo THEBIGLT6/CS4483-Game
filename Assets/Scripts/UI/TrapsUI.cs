@@ -63,10 +63,10 @@ public class TrapsUI : MonoBehaviour
     private void Update()
     {
         // Debug keys for testing
-        //if (Input.GetKeyDown(KeyCode.Alpha5)) addTrap(1, 1);
-        //if (Input.GetKeyDown(KeyCode.Alpha6)) addTrap(2, 1);
-        //if (Input.GetKeyDown(KeyCode.Alpha7)) addTrap(3, 1);
-        //if (Input.GetKeyDown(KeyCode.Alpha8)) addTrap(4, 1);
+        if (Input.GetKeyDown(KeyCode.Alpha5)) addTrap(1, 1);
+        if (Input.GetKeyDown(KeyCode.Alpha6)) addTrap(2, 1);
+        if (Input.GetKeyDown(KeyCode.Alpha7)) addTrap(3, 1);
+        if (Input.GetKeyDown(KeyCode.Alpha8)) addTrap(4, 1);
 
         if( Input.GetKeyDown(KeyCode.Q) )
         {

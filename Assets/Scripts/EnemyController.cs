@@ -25,7 +25,7 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
-        //agent.SetDestination(target.position);
+        agent.SetDestination(target.position);
 
         if (hp <= 0)
         {

@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
-    public Transform target;
+    private Transform target;
     private int hp;
 
     [HideInInspector]
@@ -15,10 +15,11 @@ public class EnemyController : MonoBehaviour
     public Material mat;
     [HideInInspector]
     public Color m_Color;
+
     private void Start()
     {
         hp = 3;
-        target = FindObjectByTag("Target").transform;
+        target = FindObjectByTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
     }
@@ -45,7 +46,8 @@ public class EnemyController : MonoBehaviour
         //Debug.Log($"Enemy {name} took {damage}. HP now: {hp}");
     }
 
-    public int getHP(){
+    public int getHP()
+    {
         return hp;
     }
 

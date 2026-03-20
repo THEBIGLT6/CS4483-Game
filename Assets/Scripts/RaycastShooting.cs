@@ -55,12 +55,6 @@ public class RaycastShooting : MonoBehaviour
         {
             ammoText.text = "";
         }
-
-
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            EquipWeapon(weapon);
-        }
     }
 
     void ShootRaycast()

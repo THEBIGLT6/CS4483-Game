@@ -20,6 +20,9 @@ public class RaycastShooting : MonoBehaviour
     private GameObject weaponModel;
     private bool hideWeapon;
 
+    private int totalAmmo;
+    [SerializeField] private AudioClip reloadSound;
+
     private void Start()
     {
         if( weapon != null )
@@ -29,6 +32,9 @@ public class RaycastShooting : MonoBehaviour
 
         reloadSlider.gameObject.SetActive(false);
         hideWeapon = false;
+
+        totalAmmo = 20;
+
     }
 
     void Update()
@@ -44,16 +50,21 @@ public class RaycastShooting : MonoBehaviour
                 weapon.ammo--;
                 ShootRaycast();
             }
-            else if (weapon.ammo <= 0 && !reloading)
+            else if (weapon.ammo <= 0 && !reloading && totalAmmo > 0)
             {
                 StartCoroutine(ReloadGun(weapon));
             }
 
-            ammoText.text = weapon.ammo + "/" + weapon.magazineSize;
+            ammoText.text = weapon.ammo + "/" + totalAmmo;
         }
         else
         {
             ammoText.text = "";
+        }
+    
+        if( Input.GetKeyDown( KeyCode.R ) && !reloading && totalAmmo > 0)
+        {
+            StartCoroutine( ReloadGun(weapon) );
         }
     }
 
@@ -125,16 +136,32 @@ public class RaycastShooting : MonoBehaviour
     
     private IEnumerator ReloadGun(WeaponSO weapon)
     {
-        reloading = true;
-        reloadSlider.gameObject.SetActive(true);
-        reloadSlider.value = 0;
-        reloadSlider.DOValue(1, weapon.reloadTime).SetEase(Ease.Linear);;
+        if( weapon != null )
+        {
+            reloading = true;
+            reloadSlider.gameObject.SetActive(true);
+            reloadSlider.value = 0;
+            reloadSlider.DOValue(1, weapon.reloadTime).SetEase(Ease.Linear);;
+            MusicManager.Instance.playOneShot( reloadSound );
+
+            yield return new WaitForSeconds(weapon.reloadTime);
         
-        yield return new WaitForSeconds(weapon.reloadTime);
-        
-        reloadSlider.gameObject.SetActive(false);
-        weapon.ammo = weapon.magazineSize;
-        reloading = false;
+            reloadSlider.gameObject.SetActive(false);
+
+            int ammoNeeded = weapon.magazineSize - weapon.ammo;
+            if ( totalAmmo >= ammoNeeded )
+            {
+                totalAmmo -= ammoNeeded;
+                weapon.ammo = weapon.ammo + ammoNeeded;
+            }
+            else
+            {
+                weapon.ammo = weapon.ammo + totalAmmo;
+                totalAmmo = 0;
+            }
+
+            reloading = false;
+        }
     }
 
     IEnumerator SpawnTracer(Vector3 origin, Vector3 direction)
@@ -180,6 +207,16 @@ public class RaycastShooting : MonoBehaviour
 
         if( hideWeapon ) weaponModel.SetActive(false);
 
+    }
+
+    public void addAmmo( int ammo )
+    {
+        totalAmmo += ammo;
+    }
+
+    public void setAmmo( int ammo )
+    {
+        totalAmmo = ammo;
     }
 
     void OnDisable()

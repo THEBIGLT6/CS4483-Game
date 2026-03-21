@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class WeaponPickup : MonoBehaviour
 {
-    [Header("Weapon Data")]
+    [Header("Weapon / Ammo Data")]
     [SerializeField] private WeaponSO weaponToEquip;
+    [SerializeField] private int ammoAmount;
+    [SerializeField] private GameObject ammoPrefab;
+    [SerializeField] private bool useWeapon;           // uses weapon if true, ammo if false
 
     [Header("Visual Effects")]
     private Vector3 rotationSpeed = new Vector3(0, 100f, 0);
@@ -17,9 +20,17 @@ public class WeaponPickup : MonoBehaviour
 
     private void Start()
     {
-        if (weaponToEquip != null && weaponToEquip.weaponPrefab != null)
+
+        if (useWeapon && weaponToEquip != null && weaponToEquip.weaponPrefab != null)
         {
             modelInstance = Instantiate(weaponToEquip.weaponPrefab, transform);
+            modelInstance.transform.localPosition = Vector3.zero;
+            modelInstance.transform.localRotation = Quaternion.identity;
+            startLocalPos = modelInstance.transform.localPosition;
+        }
+        else if (!useWeapon && ammoPrefab != null)
+        {
+            modelInstance = Instantiate(ammoPrefab, transform);
             modelInstance.transform.localPosition = Vector3.zero;
             modelInstance.transform.localRotation = Quaternion.identity;
             startLocalPos = modelInstance.transform.localPosition;
@@ -46,11 +57,10 @@ public class WeaponPickup : MonoBehaviour
             RaycastShooting shooting = parentObj.GetComponentInChildren<RaycastShooting>();
             if (shooting != null)
             {
-                shooting.EquipWeapon(weaponToEquip);
+                if( useWeapon ) shooting.EquipWeapon(weaponToEquip);
+                else            shooting.addAmmo(ammoAmount);
                 Destroy(gameObject);
             }
         }
-
-        
     }
 }

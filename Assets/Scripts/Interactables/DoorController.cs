@@ -20,10 +20,10 @@ public class DoorController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            triggerDoorOpen();
-        }
+        //if (Input.GetKeyDown(KeyCode.R))
+        //{
+        //    triggerDoorOpen();
+        //}
     }
 
     public void triggerDoorOpen()

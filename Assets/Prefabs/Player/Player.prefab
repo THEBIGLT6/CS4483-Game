@@ -69,6 +69,7 @@ MonoBehaviour:
   muzzleFlash: {fileID: 0}
   muzzlePoint: {fileID: 0}
   gunAttatchPoint: {fileID: 6190741688902843994}
+  reloadSound: {fileID: 8300000, guid: e1d79f4a0c7873742babc5f6e9ff800e, type: 3}
 --- !u!1 &849589646245135356
 GameObject:
   m_ObjectHideFlags: 0

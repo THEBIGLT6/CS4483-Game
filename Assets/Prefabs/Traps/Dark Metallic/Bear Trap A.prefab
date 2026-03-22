@@ -538,3 +538,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cooldownTime: 1
+  animator: {fileID: 5854459612709388970}

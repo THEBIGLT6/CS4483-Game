@@ -7,23 +7,20 @@ public class DoorController : MonoBehaviour
 {
     [SerializeField] private AudioClip m_doorOpen;
     [SerializeField] private AudioClip m_doorClose;
+    [SerializeField] private int m_stageNum;         // The stage the player is entering
     private Door[] m_doors;
     private Light m_light;
 
+    private bool m_isOpen;
+
     void Start()
     {
+        m_isOpen = false;
+
         m_light = GetComponentInChildren<Light>();
         m_light.enabled = false;
 
         m_doors = GetComponentsInChildren<Door>();
-    }
-
-    void Update()
-    {
-        //if (Input.GetKeyDown(KeyCode.R))
-        //{
-        //    triggerDoorOpen();
-        //}
     }
 
     public void triggerDoorOpen()
@@ -33,20 +30,26 @@ public class DoorController : MonoBehaviour
             m_doors[i].OpenDoor();
         }
 
+        m_isOpen = true;
         MusicManager.Instance.playOneShot( m_doorOpen );
         m_light.enabled = true;
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && m_isOpen)
         {
             for (int i = 0; i < m_doors.Length; i++)
             {
                 m_doors[i].CloseDoor();
             }
+
+            GameManager.Instance.setStage( m_stageNum );
+            MusicManager.Instance.playOneShot(m_doorClose);
+            ZombieSpawner.Instance.prepareRound();
+
+            m_light.enabled = false;
+            m_isOpen = false;
         }
-        MusicManager.Instance.playOneShot(m_doorClose);
-        m_light.enabled = false;
     }
 }

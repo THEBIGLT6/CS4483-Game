@@ -1829,7 +1829,7 @@ GameObject:
   - component: {fileID: 4896142341145353173}
   - component: {fileID: 8098352732992424206}
   m_Layer: 8
-  m_Name: ShirtlessZombie_BodyParts_FREE
+  m_Name: BasicZombie
   m_TagString: Zombie
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

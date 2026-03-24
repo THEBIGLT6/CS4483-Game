@@ -4,6 +4,9 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
+    [Header("Notifiers")]
+    public Action onDeath;
+
     private Transform target;
     private int hp;
 
@@ -30,8 +33,14 @@ public class EnemyController : MonoBehaviour
 
         if (hp <= 0)
         {
-            Destroy(gameObject);
+            die();
         }
+
+        // for debugging
+        //if( Input.GetKeyDown( KeyCode.X ) )
+        //{
+        //    die();
+        //}
     }
 
     public GameObject FindObjectByTag(string tag)
@@ -49,6 +58,12 @@ public class EnemyController : MonoBehaviour
     public int getHP()
     {
         return hp;
+    }
+
+    private void die()
+    {
+        onDeath?.Invoke();
+        Destroy(gameObject);
     }
 
 }

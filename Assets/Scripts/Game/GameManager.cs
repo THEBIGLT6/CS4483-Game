@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,6 +20,9 @@ public class GameManager : MonoBehaviour
     [Header("Game progress / Saving")]
     public GameProgress m_gameProgress = new GameProgress();
     string m_savePath;
+
+    [Header("HUD")]
+    [SerializeField] private TMP_Text m_moneyText;
 
 
     private void Awake()
@@ -64,16 +68,19 @@ public class GameManager : MonoBehaviour
     public void addMoney( int amount )
     {
         m_money += amount;
+        m_moneyText.text = $"$ {m_money.ToString("D4")}";
     }
 
     public void subtractMoney( int amount )
     {
         m_money -= amount;
+        m_moneyText.text = $"$ {m_money.ToString("D4")}";
     }
 
     public void setMoney( int amount )
     {
         m_money = amount;
+        m_moneyText.text = $"$ {m_money.ToString("D4")}";
     }
 
     public int getMoney()
@@ -84,6 +91,10 @@ public class GameManager : MonoBehaviour
     public void setStage( int stage )
     {
         m_currentStage = stage;
+        if( stage >= m_maxStageUnlocked )
+        {
+            m_maxStageUnlocked = stage;
+        }
     }
 
     public int getCurrentStage()

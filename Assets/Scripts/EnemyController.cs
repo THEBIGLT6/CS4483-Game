@@ -4,11 +4,14 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
+    [Header("Zombie Variables")]
+    private int hp;
+    private int moneyReward; 
+
     [Header("Notifiers")]
     public Action onDeath;
 
     private Transform target;
-    private int hp;
 
     [HideInInspector]
     public NavMeshAgent agent;
@@ -22,6 +25,7 @@ public class EnemyController : MonoBehaviour
     private void Start()
     {
         hp = 3;
+        moneyReward = 2;
         target = FindObjectByTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
@@ -62,6 +66,7 @@ public class EnemyController : MonoBehaviour
 
     private void die()
     {
+        GameManager.Instance.addMoney( moneyReward );
         onDeath?.Invoke();
         Destroy(gameObject);
     }

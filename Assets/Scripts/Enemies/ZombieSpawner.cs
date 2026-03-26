@@ -117,7 +117,7 @@ public class ZombieSpawner : MonoBehaviour
     void OnZombieDeath()
     {
         m_zombiesAlive--;
-        if (m_zombiesAlive <= 0 && m_currentState == RoundState.InProgress)
+        if (m_zombiesAlive <= 0 && m_zombieSpawnCount == m_zombiesToSpawn && m_currentState == RoundState.InProgress)
         {
             roundComplete();
         }

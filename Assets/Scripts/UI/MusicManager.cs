@@ -155,4 +155,9 @@ public class MusicManager : MonoBehaviour
         }
     }
 
+    public float soundFXVolume()
+    {
+        return m_soundFXVolume;
+    }
+
 }

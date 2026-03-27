@@ -89953,6 +89953,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 454322, guid: 74e94f0416ca474418749ee6c97439b2, type: 3}
   m_PrefabInstance: {fileID: 1173272027}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1174145368
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1174145369}
+  m_Layer: 0
+  m_Name: ZombieContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1174145369
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174145368}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1177287663
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -95952,6 +95983,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_basicZombie: {fileID: 4127960938634840145, guid: a5295e78cd3f41f4d9ccd1f82ccb9e0e, type: 3}
+  m_zombieContainer: {fileID: 1174145369}
   m_stage1Points:
   - {fileID: 2108701907}
   - {fileID: 56399741}
@@ -123330,7 +123362,6 @@ MonoBehaviour:
   m_gameProgress:
     maxStage: 1
     money: 0
-  m_moneyText: {fileID: 213182001}
 --- !u!1001 &1603635376
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -132637,6 +132668,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1716707609}
   - component: {fileID: 1716707610}
+  - component: {fileID: 1716707611}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -132679,6 +132711,19 @@ MonoBehaviour:
   m_pauseUI: {fileID: 1489716273}
   m_hud: {fileID: 2036028915}
   m_interactionPrompt: {fileID: 1017926678}
+--- !u!114 &1716707611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716707608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e76b207a3f5f293488354d9c155d54ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_moneyText: {fileID: 213182001}
 --- !u!1001 &1716865662
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -165442,6 +165487,7 @@ SceneRoots:
   - {fileID: 1716707609}
   - {fileID: 605085707}
   - {fileID: 1133996234}
+  - {fileID: 1174145369}
   - {fileID: 1251059146}
   - {fileID: 1168492459}
   - {fileID: 964508191}

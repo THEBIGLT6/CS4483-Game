@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     string m_savePath;
 
     [Header("HUD")]
-    [SerializeField] private TMP_Text m_moneyText;
+    private TMP_Text m_moneyText;
 
 
     private void Awake()
@@ -105,5 +105,11 @@ public class GameManager : MonoBehaviour
     public int getMaxStageUnlocked()
     {
         return m_maxStageUnlocked;
+    }
+
+    public void RegisterUI( RegisterUI ui )
+    {
+        m_moneyText = ui.GetMoneyText();
+        m_moneyText.text = $"$ {m_money.ToString("D4")}";
     }
 }

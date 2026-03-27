@@ -68,6 +68,8 @@ public class UIManager : MonoBehaviour
     public void mainMenu()
     {
         MusicManager.Instance.stopMusic();
+        ZombieSpawner.Instance.StopAllCoroutines();
+        ZombieSpawner.Instance.clearAllZombies();
 
         Time.timeScale = 1f;
         m_pausable = true;

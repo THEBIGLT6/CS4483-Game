@@ -21,6 +21,7 @@ public class ZombieSpawner : MonoBehaviour
     private int m_zombieSpawnCount;
     private int m_zombiesToSpawn;
     private int m_zombiesAlive;
+    [SerializeField] private Transform m_zombieContainer;
 
     [Header("Spawn Points")]
     [SerializeField] private Transform[] m_stage1Points;
@@ -46,15 +47,8 @@ public class ZombieSpawner : MonoBehaviour
 
     private void Awake()
     {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
+        // dont keep the spawner persistent
         _instance = this;
-        DontDestroyOnLoad(gameObject);
-
 
         m_currentRound = 1;
         m_roundText.text = $"Round {m_currentRound}";
@@ -71,7 +65,7 @@ public class ZombieSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (m_currentState == RoundState.WaitingToStart && m_startRound.isActiveAndEnabled)
+        if (m_currentState == RoundState.WaitingToStart && m_roundText.isActiveAndEnabled )
         {
             if (Input.GetKeyDown(KeyCode.T))
             {
@@ -107,7 +101,7 @@ public class ZombieSpawner : MonoBehaviour
     private void SpawnZombie()
     {
         Transform spawnPoint = getRandomSpawnPoint();
-        GameObject zombie = Instantiate(m_basicZombie, spawnPoint.position, spawnPoint.rotation);
+        GameObject zombie = Instantiate(m_basicZombie, spawnPoint.position, spawnPoint.rotation, m_zombieContainer);
 
         m_zombiesAlive++;
 
@@ -154,6 +148,14 @@ public class ZombieSpawner : MonoBehaviour
     {
         m_currentState = RoundState.WaitingToStart;
         m_startRound.gameObject.SetActive(true);
+    }
+
+    public void clearAllZombies()
+    {
+        foreach (Transform child in m_zombieContainer)
+        {
+            Destroy(child.gameObject);
+        }
     }
 
 }

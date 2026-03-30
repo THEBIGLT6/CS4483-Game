@@ -54,10 +54,10 @@ public class EnemyController : MonoBehaviour
         }
 
         // for debugging
-        if( Input.GetKeyDown( KeyCode.X ) )
-        {
-            die();
-        }
+        //if( Input.GetKeyDown( KeyCode.X ) )
+        //{
+        //    die();
+        //}
     }
 
     void OnEnable()

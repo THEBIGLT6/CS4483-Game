@@ -9,6 +9,16 @@ Liam Truss
 
 ## Controls
 
+Left Click - Fire gun \
+Mouse Movement - Look around \
+Shift - Sprint \
+R - Reload \ 
+Esc. - Pause Game \
+F - Interact (When prompt) \
+T - Start round (When prompt) \
+Q - Open trap menu \
+1 to 4 - Select trap (When menu open)
+
 ## Resources
 
 Blood Splatter - https://assetstore.unity.com/packages/2d/textures-materials/blood-splatter-decal-package-7518 \

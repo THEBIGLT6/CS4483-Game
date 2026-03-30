@@ -12,6 +12,7 @@ Liam Truss
 Left Click - Fire gun \
 Mouse Movement - Look around \
 Shift - Sprint \
+V - Melee \
 R - Reload \ 
 Esc. - Pause Game \
 F - Interact (When prompt) \

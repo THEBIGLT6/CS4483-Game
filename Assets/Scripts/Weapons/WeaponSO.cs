@@ -13,6 +13,7 @@ public class WeaponSO : ScriptableObject
     public int ammo = 90;
     public float headShotMultiplier = 2.5f; // Damage multiplier for headshots 
     public float fireRate = 0.15f; //seconds between each shot
+    public bool isAutomatic = false;
     public AudioClip shootSound;
     public GameObject weaponPrefab;
 }

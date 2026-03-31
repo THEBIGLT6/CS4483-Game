@@ -16,6 +16,7 @@ public class RaycastShooting : MonoBehaviour
     public Transform muzzlePoint; 
 
     private bool reloading = false;
+    private float m_nextFireTime = 0f;
     [SerializeField] private Transform gunAttatchPoint;
     private GameObject weaponModel;
     private bool hideWeapon;
@@ -45,12 +46,19 @@ public class RaycastShooting : MonoBehaviour
         
         if( weapon != null )
         {
-            if (Input.GetButtonDown("Fire1") && weapon.ammo >= 1)
+            bool canShoot = Time.time >= m_nextFireTime;
+            if (weapon.isAutomatic)
             {
-                weapon.ammo--;
-                ShootRaycast();
+                if (Input.GetButton("Fire1") && canShoot && weapon.ammo > 0 && !reloading) fire();
+                
             }
-            else if (weapon.ammo <= 0 && !reloading && totalAmmo > 0)
+            else
+            {
+                if (Input.GetButtonDown("Fire1") && canShoot && weapon.ammo > 0 && !reloading) fire();
+                
+            }
+
+            if (weapon.ammo <= 0 && !reloading && totalAmmo > 0)
             {
                 StartCoroutine(ReloadGun(weapon));
             }
@@ -66,6 +74,14 @@ public class RaycastShooting : MonoBehaviour
         {
             StartCoroutine( ReloadGun(weapon) );
         }
+    }
+
+    private void fire()
+    {
+        weapon.ammo--;
+        ShootRaycast();
+
+        m_nextFireTime = Time.time + weapon.fireRate;
     }
 
     void ShootRaycast()

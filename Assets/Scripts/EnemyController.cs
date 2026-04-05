@@ -7,6 +7,8 @@ public class EnemyController : MonoBehaviour
     [Header("Zombie Variables")]
     private int hp;
     private int moneyReward; 
+    private int maxHp;
+    private Renderer[] allRenderers;
 
     [Header("Notifiers")]
     public Action onDeath;
@@ -32,6 +34,7 @@ public class EnemyController : MonoBehaviour
     private void Start()
     {
         hp = 3;
+        maxHp = hp;
         moneyReward = 2;
 
         target = FindObjectByTag("Player").transform;
@@ -39,6 +42,12 @@ public class EnemyController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
         m_audioSource = GetComponent<AudioSource>();
+        allRenderers = GetComponentsInChildren<Renderer>();
+        m_Color = allRenderers[0].material.color;
+        if (mat == null)
+            Debug.LogError("No renderer found on " + gameObject.name);
+        else
+            Debug.Log("Renderer found: " + mat.name);
 
         applyVolume();
         StartCoroutine( PlayRandomSounds() );
@@ -84,6 +93,8 @@ public class EnemyController : MonoBehaviour
 
         hp -= damage;
         //Debug.Log($"Enemy {name} took {damage}. HP now: {hp}");
+        UpdateColor();
+        Debug.Log(gameObject.name + " HP: " + hp);
     }
 
     public int getHP()
@@ -130,4 +141,12 @@ public class EnemyController : MonoBehaviour
         m_audioSource.volume = MusicManager.Instance.soundFXVolume();   
     }
 
+   void UpdateColor()
+    {
+        float healthPercent = (float)hp / maxHp;
+        foreach (Renderer r in allRenderers)
+        {
+            r.material.color = Color.Lerp(Color.red, m_Color, healthPercent);
+        }
+    }
 }

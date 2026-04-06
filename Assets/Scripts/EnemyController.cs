@@ -73,6 +73,7 @@ public class EnemyController : MonoBehaviour
             Debug.Log("Enemy hit the player!");
             other.GetComponent<PlayerController>().TakeDamage(25);
             animator.SetTrigger("attack");
+            attack();
         }
     }
 

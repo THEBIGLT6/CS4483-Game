@@ -30,6 +30,8 @@ public class EnemyController : MonoBehaviour
     public Material mat;
     [HideInInspector]
     public Color m_Color;
+    [HideInInspector]
+    public Animator animator;
 
     private void Start()
     {
@@ -43,6 +45,7 @@ public class EnemyController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         m_audioSource = GetComponent<AudioSource>();
         allRenderers = GetComponentsInChildren<Renderer>();
+        animator = GetComponent<Animator>();
         m_Color = allRenderers[0].material.color;
 
         applyVolume();
@@ -69,6 +72,7 @@ public class EnemyController : MonoBehaviour
         if (other.CompareTag("Player")){
             Debug.Log("Enemy hit the player!");
             other.GetComponent<PlayerController>().TakeDamage(25);
+            animator.SetTrigger("attack");
         }
     }
 

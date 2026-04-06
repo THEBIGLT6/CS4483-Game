@@ -65,6 +65,13 @@ public class EnemyController : MonoBehaviour
         //}
     }
 
+    void OnTriggerEnter(Collider other){
+        if (other.CompareTag("Player")){
+            Debug.Log("Enemy hit the player!");
+            other.GetComponent<PlayerController>().TakeDamage(25);
+        }
+    }
+
     void OnEnable()
     {
         SettingsManager.Instance.m_OnSettingsChanged += applyVolume;

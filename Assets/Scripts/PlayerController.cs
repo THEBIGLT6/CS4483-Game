@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class PlayerController : MonoBehaviour
     public float jumpCooldown;
     public float airMultiplier;
     public bool readyToJump;
+
+    public int hp;
+    public TMP_Text healthText;
 
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
@@ -118,5 +122,15 @@ public class PlayerController : MonoBehaviour
     private void ResetJump()
     {
         readyToJump = true;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        hp -= damage;
+        healthText.text = "HP: " + hp;
+        if (hp <= 0)
+        {
+            Debug.Log("Player died!");
+        }
     }
 }

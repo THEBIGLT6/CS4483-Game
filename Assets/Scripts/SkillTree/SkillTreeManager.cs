@@ -81,5 +81,6 @@ public class SkillTreeManager : MonoBehaviour
     
     private void applySkill( Skill skill )
     {
+        skill.apply();
     }
 }

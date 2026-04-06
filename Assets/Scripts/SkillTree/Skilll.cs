@@ -9,8 +9,7 @@ public enum SkillType
     Player
 }
 
-[CreateAssetMenu(menuName = "Skill Tree/Skill")]
-public class Skill : ScriptableObject
+public abstract class Skill : ScriptableObject
 {
     public string skillName;
     public string description;
@@ -18,4 +17,5 @@ public class Skill : ScriptableObject
     public int level;
     public SkillType skillType;
 
+    public abstract void apply();
 }

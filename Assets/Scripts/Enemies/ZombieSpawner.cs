@@ -147,6 +147,7 @@ public class ZombieSpawner : MonoBehaviour
     public void openStartRound()
     {
         m_currentState = RoundState.WaitingToStart;
+        if( TrapsUI.Instance != null ) TrapsUI.Instance.giveAllotedTraps();
         m_startRound.gameObject.SetActive(true);
     }
 

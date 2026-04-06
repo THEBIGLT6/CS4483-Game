@@ -44,10 +44,6 @@ public class EnemyController : MonoBehaviour
         m_audioSource = GetComponent<AudioSource>();
         allRenderers = GetComponentsInChildren<Renderer>();
         m_Color = allRenderers[0].material.color;
-        if (mat == null)
-            Debug.LogError("No renderer found on " + gameObject.name);
-        else
-            Debug.Log("Renderer found: " + mat.name);
 
         applyVolume();
         StartCoroutine( PlayRandomSounds() );

@@ -46,6 +46,7 @@ public class DoorController : MonoBehaviour
 
             GameManager.Instance.setStage( m_stageNum );
             MusicManager.Instance.playOneShot(m_doorClose);
+            TrapsUI.Instance.clearTraps();
             ZombieSpawner.Instance.prepareRound();
 
             m_light.enabled = false;

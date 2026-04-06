@@ -2,14 +2,22 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class TrapsUI : MonoBehaviour
 {
+    private static TrapsUI _instance;
+    public static TrapsUI Instance => _instance;
 
     private int m_trap1Count;
     private int m_trap2Count;
     private int m_trap3Count;
     private int m_trap4Count;
+
+    private int m_allotedTrap1;
+    private int m_allotedTrap2;
+    private int m_allotedTrap3;
+    private int m_allotedTrap4;
 
     private bool m_selectMode;
 
@@ -34,7 +42,12 @@ public class TrapsUI : MonoBehaviour
     [SerializeField] private GameObject m_trap4Prefab;
     private GameObject m_selectedTrapPrefab;
 
+    [Header("Upgrades")]
+    private bool m_operateIncrease;
+    private bool m_damageIncrease;
+
     [Header("Placement")]
+    [SerializeField] private Transform m_trapsContainer;
     [SerializeField] private Transform m_playerCamera;
     private float m_placeDistance = 20f;
     private GameObject m_previewTrap;
@@ -44,6 +57,8 @@ public class TrapsUI : MonoBehaviour
 
     void Start()
     {
+        _instance = this;
+
         m_selectMode = false;
 
         m_background1.enabled = false;
@@ -58,6 +73,14 @@ public class TrapsUI : MonoBehaviour
         m_keyPicture2.enabled = false;
         m_keyPicture3.enabled = false;
         m_keyPicture4.enabled = false;
+
+        m_allotedTrap1 = 0;
+        m_allotedTrap2 = 0;
+        m_allotedTrap3 = 0;
+        m_allotedTrap4 = 0;
+
+        m_operateIncrease = false;
+        m_damageIncrease = false;
     }
 
     private void Update()
@@ -95,6 +118,7 @@ public class TrapsUI : MonoBehaviour
 
     public void addTrap( int trapNumber, int numOfTraps )
     {
+        if (numOfTraps == 0) return;
         switch( trapNumber )
         {
             case 1:
@@ -186,6 +210,32 @@ public class TrapsUI : MonoBehaviour
         }
     }
 
+    public void setTrapAllotment(int trapNumber, int trapAllotment)
+    {
+        if( trapNumber == 1 ) m_allotedTrap1 = trapAllotment;
+        if( trapNumber == 2 ) m_allotedTrap2 = trapAllotment;
+        if( trapNumber == 3 ) m_allotedTrap3 = trapAllotment;
+        if( trapNumber == 4 ) m_allotedTrap4 = trapAllotment;
+    }
+
+    public void giveAllotedTraps()
+    {
+        addTrap(1, m_allotedTrap1);
+        addTrap(2, m_allotedTrap2);
+        addTrap(3, m_allotedTrap3);
+        addTrap(4, m_allotedTrap4);
+    }
+
+    public void setOperateUpgrade()
+    {
+        m_operateIncrease = true;
+    }
+
+    public void setDamageUpgrade()
+    {
+        m_damageIncrease = true;
+    }
+
     private void openSelectTrap()
     {
         m_selectMode = !m_selectMode;
@@ -229,7 +279,19 @@ public class TrapsUI : MonoBehaviour
 
     private void placeTrap()
     {
-        Instantiate(m_selectedTrapPrefab, m_previewTrap.transform.position, Quaternion.identity);
+        TrapController trap = m_selectedTrapPrefab.GetComponent<TrapController>();
+
+        if ( m_operateIncrease )
+        {
+            trap.cooldownTime *= 0.75f; // 25% faster operation
+        }
+
+        if( m_damageIncrease )
+        {
+            trap.damage = Mathf.RoundToInt(trap.damage * 1.2f); // 20% more damage
+        }
+
+        Instantiate(m_selectedTrapPrefab, m_previewTrap.transform.position, Quaternion.identity, m_trapsContainer);
 
         Destroy(m_previewTrap);
         m_previewTrap = null;
@@ -275,6 +337,14 @@ public class TrapsUI : MonoBehaviour
         AudioSource[] audioSources = obj.GetComponentsInChildren<AudioSource>();
         foreach (var audio in audioSources)
             audio.enabled = false;
+    }
+
+    public void clearTraps()
+    {
+        foreach (Transform child in m_trapsContainer)
+        {
+            Destroy(child.gameObject);
+        }
     }
 
 }

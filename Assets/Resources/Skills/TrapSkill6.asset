@@ -9,11 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c5c21acb6f8cda44b3a905771538e70, type: 3}
+  m_Script: {fileID: 11500000, guid: 4bbf5fd0633f71a41aa1cc0608208bc0, type: 3}
   m_Name: TrapSkill6
   m_EditorClassIdentifier: 
-  skillName: Trap Skill 6
-  description: This is the description for the first skill.
-  cost: 10
+  skillName: Damage Increase
+  description: All Traps will do 25% more damage.
+  cost: 80
   level: 6
   skillType: 1
+  trapToAdd: 0
+  operateIncrease: 0
+  damageIncrease: 1

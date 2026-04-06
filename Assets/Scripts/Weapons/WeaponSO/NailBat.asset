@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed10e795312c364d8876c8a59eae420, type: 3}
   m_Name: NailBat
   m_EditorClassIdentifier: 
-  damage: 1
+  damage: 34
   range: 3
   weaponPrefab: {fileID: 6463930976615227425, guid: b3e7c371955b9d04a9a79256bb008328, type: 3}
   swingSpeedFactor: 0.2

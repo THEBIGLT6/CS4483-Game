@@ -47965,6 +47965,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 849589646245135356, guid: 9a8f5456174d40840a37c3378a32585b, type: 3}
+      propertyPath: m_TagString
+      value: PlayerContainer
+      objectReference: {fileID: 0}
     - target: {fileID: 1050243149057012048, guid: 9a8f5456174d40840a37c3378a32585b, type: 3}
       propertyPath: spawnPoints.Array.data[0]
       value: 
@@ -48041,6 +48045,10 @@ PrefabInstance:
       propertyPath: reloadSlider
       value: 
       objectReference: {fileID: 1751229178}
+    - target: {fileID: 8868543293817239242, guid: 9a8f5456174d40840a37c3378a32585b, type: 3}
+      propertyPath: startingWeapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 466acd3738b8e6745bc66dd2794f070f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -74830,7 +74838,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &964508191
 Transform:
   m_ObjectHideFlags: 0
@@ -151783,14 +151791,16 @@ MonoBehaviour:
     Left
     Click - Shoot
 
+    Q - Open Trap Menu
+
     R - Reload
 
     V - Melee
 
-    Space - Jump
+    Space
+    - Jump
 
-    Escape -
-    Pause'
+    Escape - Pause'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

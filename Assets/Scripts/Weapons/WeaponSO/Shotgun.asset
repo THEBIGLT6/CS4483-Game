@@ -15,7 +15,7 @@ MonoBehaviour:
   coneAngle: 40
   maxDistance: 8
   knockbackForce: 30
-  damage: 2
+  damage: 65
   reloadTime: 3
   magazineSize: 6
   ammo: 18

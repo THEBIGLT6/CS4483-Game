@@ -12,6 +12,7 @@ public class MeleeCombat : MonoBehaviour
     [SerializeField] private RaycastShooting m_shooting;
     [SerializeField] private MeleeWeaponSO m_currentWeapon;
     private GameObject m_weaponModel;
+    private float m_damageMultiplier;
 
     [Header("Swinging")]
     private Vector3 m_startPos;
@@ -27,6 +28,7 @@ public class MeleeCombat : MonoBehaviour
 
     void Start()
     {
+        m_damageMultiplier = 1f;
         m_t = 0f;
         m_isSwinging = false;
         m_hasHit = false;
@@ -110,6 +112,7 @@ public class MeleeCombat : MonoBehaviour
             EnemyController health = hit.collider.GetComponent<EnemyController>();
             if (health != null)
             {
+                int damage = Mathf.CeilToInt( m_currentWeapon.damage * m_damageMultiplier);
                 health.TakeDamage( m_currentWeapon.damage );
             }
         }
@@ -120,5 +123,8 @@ public class MeleeCombat : MonoBehaviour
         m_currentWeapon = newMeleeWeapon;   
     }
 
-
+    public void setDamageMultiplier( float multiple )
+    {
+        m_damageMultiplier = multiple;
+    }
 }

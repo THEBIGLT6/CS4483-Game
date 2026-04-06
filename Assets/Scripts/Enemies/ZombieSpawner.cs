@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ZombieSpawner : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class ZombieSpawner : MonoBehaviour
     // Singleton pattern implementation
     private static ZombieSpawner _instance;
     public static ZombieSpawner Instance => _instance;
+
+    [Header("Ammo Refills")]
+    private int m_startingRefillAmount;
 
     [Header("Zombies")]
     [SerializeField] private GameObject m_basicZombie;
@@ -49,6 +53,8 @@ public class ZombieSpawner : MonoBehaviour
     {
         // dont keep the spawner persistent
         _instance = this;
+
+        m_startingRefillAmount = 20;
 
         m_currentRound = 1;
         m_roundText.text = $"Round {m_currentRound}";
@@ -123,7 +129,8 @@ public class ZombieSpawner : MonoBehaviour
         if ( currentStage == 1 )      m_door1To2.triggerDoorOpen();
         else if ( currentStage == 2 ) m_door2To3.triggerDoorOpen();
         else if ( currentStage == 3 ) m_door3To1.triggerDoorOpen();
-        
+
+        giveAmmo();
         m_currentRound++;
         m_currentState = RoundState.RoundComplete;
         m_roundText.text = $"Round {m_currentRound}";
@@ -142,6 +149,35 @@ public class ZombieSpawner : MonoBehaviour
         else if ( currentStage == 2 ) return m_stage2Points;
         else if ( currentStage == 3 ) return m_stage3Points;
         else                          return m_stage4Points;
+    }
+
+    private void giveAmmo()
+    {
+        RaycastShooting shooting = null;
+        GameObject obj = FindRootWithTag("PlayerContainer");
+        if (obj != null)
+        {
+            shooting = obj.GetComponentInChildren<RaycastShooting>();
+        }
+
+        int ammo = m_startingRefillAmount + ( m_currentRound * 10 );
+        if (shooting != null) shooting.addAmmo(ammo);
+    }
+
+    private GameObject FindRootWithTag(string tag)
+    {
+        Scene scene = SceneManager.GetActiveScene();
+        GameObject[] roots = scene.GetRootGameObjects();
+
+        foreach (GameObject obj in roots)
+        {
+            if (obj.CompareTag(tag))
+            {
+                return obj;
+            }
+        }
+
+        return null;
     }
 
     public void openStartRound()

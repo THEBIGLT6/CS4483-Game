@@ -33,7 +33,7 @@ public class EnemyController : MonoBehaviour
 
     private void Start()
     {
-        hp = 3;
+        hp = 100;
         maxHp = hp;
         moneyReward = 2;
 
@@ -90,7 +90,7 @@ public class EnemyController : MonoBehaviour
         hp -= damage;
         //Debug.Log($"Enemy {name} took {damage}. HP now: {hp}");
         UpdateColor();
-        Debug.Log(gameObject.name + " HP: " + hp);
+        //Debug.Log(gameObject.name + " HP: " + hp);
     }
 
     public int getHP()

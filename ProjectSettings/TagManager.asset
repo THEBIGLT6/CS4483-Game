@@ -10,6 +10,7 @@ TagManager:
   - Zombie
   - GunAttachPoint
   - MuzzlePoint
+  - PlayerContainer
   layers:
   - Default
   - TransparentFX

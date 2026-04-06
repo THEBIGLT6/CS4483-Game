@@ -21,11 +21,18 @@ public class RaycastShooting : MonoBehaviour
     private GameObject weaponModel;
     private bool hideWeapon;
 
+    [SerializeField] WeaponSO startingWeapon;
+
+    private float damageMultiplier;
+
     private int totalAmmo;
     [SerializeField] private AudioClip reloadSound;
 
+
     private void Start()
     {
+        damageMultiplier = 1.0f;
+
         if( weapon != null )
         {
             weapon.ammo = weapon.magazineSize;
@@ -36,6 +43,10 @@ public class RaycastShooting : MonoBehaviour
 
         totalAmmo = 20;
 
+        if( startingWeapon != null )
+        {
+            EquipWeapon( startingWeapon );
+        }
     }
 
     void Update()
@@ -49,12 +60,12 @@ public class RaycastShooting : MonoBehaviour
             bool canShoot = Time.time >= m_nextFireTime;
             if (weapon.isAutomatic)
             {
-                if (Input.GetButton("Fire1") && canShoot && weapon.ammo > 0 && !reloading) fire();
+                if (Input.GetButton("Fire1") && canShoot && weapon.ammo > 0 && !reloading && Time.timeScale > 0f) fire();
                 
             }
             else
             {
-                if (Input.GetButtonDown("Fire1") && canShoot && weapon.ammo > 0 && !reloading) fire();
+                if (Input.GetButtonDown("Fire1") && canShoot && weapon.ammo > 0 && !reloading && Time.timeScale > 0f) fire();
                 
             }
 
@@ -117,7 +128,8 @@ public class RaycastShooting : MonoBehaviour
                 if (enemy == null) continue; //ignoring the "agent in enemycontroller is null for now
 
                 //Debug.Log("Hit: " + collider.name);
-                enemy.TakeDamage(weapon.damage);
+                int damage = Mathf.CeilToInt(weapon.damage * damageMultiplier);
+                enemy.TakeDamage(damage);
                 //Debug.Log("Zombie HP: " + enemy.getHP());
                 //Debug.Log(weapon.damage);
                 if (enemy !=null){
@@ -214,6 +226,7 @@ public class RaycastShooting : MonoBehaviour
         weaponModel = Instantiate( newWeapon.weaponPrefab, gunAttatchPoint );
         weaponModel.transform.localPosition = Vector3.zero;
         weaponModel.transform.localRotation = Quaternion.identity;
+        damageMultiplier = 1f;
 
         muzzleFlash = weaponModel.GetComponentInChildren<ParticleSystem>();
         foreach (Transform child in weaponModel.transform)
@@ -233,6 +246,11 @@ public class RaycastShooting : MonoBehaviour
     public void setAmmo( int ammo )
     {
         totalAmmo = ammo;
+    }
+
+    public void setDamageMultiplier( float multiple )
+    {
+        damageMultiplier = multiple;
     }
 
     void OnDisable()

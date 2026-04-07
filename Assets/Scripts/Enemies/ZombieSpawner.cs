@@ -19,6 +19,7 @@ public class ZombieSpawner : MonoBehaviour
 
     [Header("Ammo Refills")]
     private int m_startingRefillAmount;
+    private float m_refillMultipler;
 
     [Header("Zombies")]
     [SerializeField] private GameObject m_basicZombie;
@@ -55,6 +56,7 @@ public class ZombieSpawner : MonoBehaviour
         _instance = this;
 
         m_startingRefillAmount = 20;
+        m_refillMultipler = 1.0f;
 
         m_currentRound = 1;
         m_roundText.text = $"Round {m_currentRound}";
@@ -131,6 +133,7 @@ public class ZombieSpawner : MonoBehaviour
         else if ( currentStage == 3 ) m_door3To1.triggerDoorOpen();
 
         giveAmmo();
+        resetHealth();
         m_currentRound++;
         m_currentState = RoundState.RoundComplete;
         m_roundText.text = $"Round {m_currentRound}";
@@ -160,8 +163,20 @@ public class ZombieSpawner : MonoBehaviour
             shooting = obj.GetComponentInChildren<RaycastShooting>();
         }
 
-        int ammo = m_startingRefillAmount + ( m_currentRound * 10 );
+        int ammo = Mathf.RoundToInt( ( m_startingRefillAmount + ( m_currentRound * 10 ) ) * m_refillMultipler );
         if (shooting != null) shooting.addAmmo(ammo);
+    }
+
+    private void resetHealth()
+    {
+        PlayerController controller = null;
+        GameObject obj = FindRootWithTag("PlayerContainer");
+        if (obj != null)
+        {
+            controller = obj.GetComponentInChildren<PlayerController>();
+        }
+
+        if (controller != null) controller.healToMax();
     }
 
     private GameObject FindRootWithTag(string tag)
@@ -193,6 +208,11 @@ public class ZombieSpawner : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+    }
+
+    public void setRefillMultiplier(float multiplier)
+    {
+        m_refillMultipler = multiplier;
     }
 
 }

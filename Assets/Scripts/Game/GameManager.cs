@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Money System")]
     private int m_money;
+    private float m_moneyMultiplier;
 
     [Header("Game progress / Saving")]
     public GameProgress m_gameProgress = new GameProgress();
@@ -36,6 +37,7 @@ public class GameManager : MonoBehaviour
         _instance = this;
         DontDestroyOnLoad(gameObject);
 
+        resetMultiplier();
 
         // should be - "C:/Users/*User*/AppData/LocalLow/LiamMayaMatt/CS4483/zombieGameSave.json"
         m_savePath = Application.persistentDataPath + "/zombieGameSave.json";
@@ -67,7 +69,7 @@ public class GameManager : MonoBehaviour
     // PUBLIC FUNCTIONS
     public void addMoney( int amount )
     {
-        m_money += amount;
+        m_money = m_money + Mathf.RoundToInt( amount * m_moneyMultiplier );
         m_moneyText.text = $"$ {m_money.ToString("D4")}";
     }
 
@@ -111,5 +113,15 @@ public class GameManager : MonoBehaviour
     {
         m_moneyText = ui.GetMoneyText();
         m_moneyText.text = $"$ {m_money.ToString("D4")}";
+    }
+
+    public void setMoneyMultiplier(float multiple)
+    {
+        m_moneyMultiplier = multiple;
+    }
+
+    public void resetMultiplier()
+    {
+        m_moneyMultiplier = 1f;
     }
 }

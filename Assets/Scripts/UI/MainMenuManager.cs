@@ -35,6 +35,7 @@ public class MainMenuManager : MonoBehaviour
     {
         SceneManager.LoadScene(1);
         GameManager.Instance.setStage( selectedStage );
+        GameManager.Instance.resetMultiplier();
     }
 
     public void openLeaderboard()

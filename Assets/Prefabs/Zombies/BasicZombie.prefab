@@ -1918,6 +1918,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   mat: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 0}
+  animator: {fileID: 0}
 --- !u!136 &6121021333238166681
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WeaponSkill3
   m_EditorClassIdentifier: 
   skillName: Weapon Unlock I
-  description: Unlock new SMG weapon.
+  description: Unlock new SMG weapon
   cost: 40
   level: 3
   skillType: 0

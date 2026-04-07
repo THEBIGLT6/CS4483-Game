@@ -6,12 +6,14 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed;
     public float groundDrag;
+    private float speedMultiplier;
 
     public float jumpForce;
     public float jumpCooldown;
     public float airMultiplier;
     public bool readyToJump;
 
+    public int maxHp;
     public int hp;
     public TMP_Text healthText;
 
@@ -39,6 +41,8 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        speedMultiplier = 1f;
+
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
@@ -89,16 +93,14 @@ public class PlayerController : MonoBehaviour
     private void MovePlayer()
     {
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
-        if(grounded)
-            if(sprinting)
-                rb.AddForce(moveDirection.normalized * moveSpeed * 10f * 1.5f, ForceMode.Force);
-            else
-                rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
-        else if(!grounded)
-            if(sprinting)
-                rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier * 1.5f, ForceMode.Force );
-            else
-                rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+        
+        float baseForce = moveSpeed * 10f;
+        float sprintMultiplier = sprinting ? 1.5f : 1f;
+        float groundMultiplier = grounded ? 1f : airMultiplier;
+
+        float finalForce = baseForce * sprintMultiplier * groundMultiplier * speedMultiplier;
+
+        rb.AddForce(moveDirection.normalized * finalForce, ForceMode.Force);
     }
 
     private void SpeedControl()
@@ -132,5 +134,28 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Player died!");
         }
+    }
+
+    public void setMaxHealth( int health )
+    {
+        maxHp = health;
+        healToMax();
+    }
+
+    public void Heal(int amount)
+    {
+        hp += amount;
+        healthText.text = "HP: " + hp;
+    }
+
+    public void healToMax()
+    {
+        hp = maxHp;
+        healthText.text = "HP: " + hp;
+    }
+
+    public void setSpeedMultiplier( float multiple )
+    {
+        speedMultiplier = multiple;
     }
 }

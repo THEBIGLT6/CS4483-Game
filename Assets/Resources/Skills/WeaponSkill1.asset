@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WeaponSkill1
   m_EditorClassIdentifier: 
   skillName: Weapon Damage I
-  description: Pistol does 10% more damage.
+  description: Pistol does 10% more damage
   cost: 10
   level: 1
   skillType: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WeaponSkill6
   m_EditorClassIdentifier: 
   skillName: Weapon Damage III
-  description: Shotgun does 25% more damage.
+  description: Shotgun does 25% more damage
   cost: 80
   level: 6
   skillType: 0

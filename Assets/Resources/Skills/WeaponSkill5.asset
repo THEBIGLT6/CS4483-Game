@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WeaponSkill5
   m_EditorClassIdentifier: 
   skillName: Weapon Unlock II
-  description: Unlock new Shotgun weapon.
+  description: Unlock new Shotgun weapon
   cost: 60
   level: 5
   skillType: 0

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
+using Unity.VisualScripting;
 
 public class RaycastShooting : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class RaycastShooting : MonoBehaviour
     public Transform muzzlePoint; 
 
     private bool reloading = false;
+    private float reloadSpeedIncrease;
     private float m_nextFireTime = 0f;
     [SerializeField] private Transform gunAttatchPoint;
     private GameObject weaponModel;
@@ -31,6 +33,7 @@ public class RaycastShooting : MonoBehaviour
 
     private void Start()
     {
+        reloadSpeedIncrease = 1.0f;
         damageMultiplier = 1.0f;
 
         if( weapon != null )
@@ -114,6 +117,8 @@ public class RaycastShooting : MonoBehaviour
 
         foreach (var collider in hitColliders)
         {
+            if( !collider.isTrigger ) continue;  // account for 2nd capsule collider on zombie
+
             //Debug.Log("Object in overlapSphere: " + collider.name);
             
             Vector3 toTarget = collider.transform.position - transform.position;
@@ -169,10 +174,13 @@ public class RaycastShooting : MonoBehaviour
             reloading = true;
             reloadSlider.gameObject.SetActive(true);
             reloadSlider.value = 0;
-            reloadSlider.DOValue(1, weapon.reloadTime).SetEase(Ease.Linear);;
+
+            float adjustedReloadTime = weapon.reloadTime / reloadSpeedIncrease;
+
+            reloadSlider.DOValue(1, adjustedReloadTime).SetEase(Ease.Linear);;
             MusicManager.Instance.playOneShot( reloadSound );
 
-            yield return new WaitForSeconds(weapon.reloadTime);
+            yield return new WaitForSeconds(adjustedReloadTime);
         
             reloadSlider.gameObject.SetActive(false);
 
@@ -251,6 +259,11 @@ public class RaycastShooting : MonoBehaviour
     public void setDamageMultiplier( float multiple )
     {
         damageMultiplier = multiple;
+    }
+
+    public void setReloadSpeedIncrease( float increase )
+    {
+        reloadSpeedIncrease = increase;
     }
 
     void OnDisable()

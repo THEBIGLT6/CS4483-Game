@@ -20,6 +20,6 @@ MonoBehaviour:
   healthIncrement: 0
   movmentSpeedIncrement: 0
   reloadSpeedIncrement: 0
-  ammoIncrement: 1.5
-  cashIncrease: 0
+  ammoIncrement: 0
+  cashIncrease: 1.5
   secondShot: 0

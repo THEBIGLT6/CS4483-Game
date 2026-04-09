@@ -120,9 +120,10 @@ public class EnemyController : MonoBehaviour
 
     private void die()
     {
+        animator.SetTrigger("dead");
         GameManager.Instance.addMoney( moneyReward );
         onDeath?.Invoke();
-        Destroy(gameObject);
+        Destroy(gameObject, 2.0f);
     }
 
     private System.Collections.IEnumerator PlayRandomSounds()

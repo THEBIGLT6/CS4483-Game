@@ -126,17 +126,41 @@ public class ZombieSpawner : MonoBehaviour
     }
 
     private void roundComplete()
-    {  
-        int currentStage = GameManager.Instance.getCurrentStage();
-        if ( currentStage == 1 )      m_door1To2.triggerDoorOpen();
-        else if ( currentStage == 2 ) m_door2To3.triggerDoorOpen();
-        else if ( currentStage == 3 ) m_door3To1.triggerDoorOpen();
+    {
+        m_currentRound++;
+
+        bool triggeredDoor = false;
+
+        if (m_currentRound % 3 == 0)
+        {
+            int doorIndex = (m_currentRound / 3 - 1) % 3;
+
+            switch (doorIndex)
+            {
+                case 0:
+                    m_door1To2.triggerDoorOpen();
+                    break;
+                case 1:
+                    m_door2To3.triggerDoorOpen();
+                    break;
+                case 2:
+                    m_door3To1.triggerDoorOpen();
+                    break;
+            }
+
+            triggeredDoor = true;
+        }
 
         giveAmmo();
         resetHealth();
-        m_currentRound++;
         m_currentState = RoundState.RoundComplete;
         m_roundText.text = $"Round {m_currentRound}";
+
+        if ( !triggeredDoor )
+        {
+            prepareRound();
+        }
+
     }
 
     private Transform getRandomSpawnPoint()

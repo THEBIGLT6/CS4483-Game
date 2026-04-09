@@ -14,6 +14,10 @@ public class EnemyController : MonoBehaviour
     public Action onDeath;
     private Transform target;
 
+    [Header("Push Back Settings")]
+    private float pushRadius = 3.5f;
+    private float pushForce = 10f;
+
     [Header("Audio")]
     [SerializeField] private AudioClip[] m_idleSounds;
     [SerializeField] private AudioClip[] m_damageSounds;
@@ -54,7 +58,11 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
-        if( agent.isActiveAndEnabled ) agent.SetDestination(target.position);
+        if (agent.isActiveAndEnabled)
+        {
+            agent.SetDestination(target.position);
+            ApplyPlayerPush();
+        }
 
         if (hp <= 0)
         {
@@ -155,6 +163,19 @@ public class EnemyController : MonoBehaviour
         foreach (Renderer r in allRenderers)
         {
             r.material.color = Color.Lerp(Color.red, m_Color, healthPercent);
+        }
+    }
+
+    private void ApplyPlayerPush()
+    {
+        float distance = Vector3.Distance(transform.position, target.position);
+
+        if (distance < pushRadius)
+        {
+            Vector3 dir = (transform.position - target.position).normalized;
+            float strength = (pushRadius - distance) / pushRadius * pushForce; // stronger push when closer
+
+            agent.Move(dir * strength * Time.deltaTime);
         }
     }
 }

@@ -132,7 +132,8 @@ public class PlayerController : MonoBehaviour
         healthText.text = "HP: " + hp;
         if (hp <= 0)
         {
-            Debug.Log("Player died!");
+            DeathScreen.Instance.Show();
+            //Debug.Log("Player died!");
         }
     }
 

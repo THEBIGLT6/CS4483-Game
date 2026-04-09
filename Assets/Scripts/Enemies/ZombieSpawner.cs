@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 public class ZombieSpawner : MonoBehaviour
@@ -237,6 +238,34 @@ public class ZombieSpawner : MonoBehaviour
     public void setRefillMultiplier(float multiplier)
     {
         m_refillMultipler = multiplier;
+    }
+
+    public void KnockbackZombies(Vector3 origin, float force, float radius)
+    {
+        foreach (Transform zombie in m_zombieContainer)
+        {
+            NavMeshAgent agent = zombie.GetComponent<NavMeshAgent>();
+            Vector3 direction = (zombie.position - origin).normalized;
+            float distance = Vector3.Distance(origin, zombie.position);
+
+            if (distance <= radius)
+            {
+                float falloff = 1f - (distance / radius);
+
+                if (agent != null)
+                {
+                    agent.enabled = false;
+                    zombie.position += direction * force * falloff;   // apply force
+                    StartCoroutine(ReenableAgent(agent, 0.3f));       // re-enable agent after force applied
+                }
+            }
+        }
+    }
+
+    private IEnumerator ReenableAgent(NavMeshAgent agent, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (agent != null) agent.enabled = true;
     }
 
 }

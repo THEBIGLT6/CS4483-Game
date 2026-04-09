@@ -15,8 +15,8 @@ public class EnemyController : MonoBehaviour
     private Transform target;
 
     [Header("Push Back Settings")]
-    private float pushRadius = 3.5f;
-    private float pushForce = 10f;
+    private float pushRadius = 2.5f;
+    private float pushForce = 20f;
 
     [Header("Audio")]
     [SerializeField] private AudioClip[] m_idleSounds;

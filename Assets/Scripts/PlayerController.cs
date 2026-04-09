@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,9 +14,13 @@ public class PlayerController : MonoBehaviour
     public float airMultiplier;
     public bool readyToJump;
 
+    [Header("Health")]
     public int maxHp;
     public int hp;
     public TMP_Text healthText;
+    private bool secondShot;
+    [SerializeField] private TMP_Text secondShotCountdownText;
+    [SerializeField] private TMP_Text secondShotActivatedText;
 
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
@@ -42,6 +47,9 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         speedMultiplier = 1f;
+        secondShot = false;
+        secondShotCountdownText.gameObject.SetActive(false);
+        secondShotActivatedText.gameObject.SetActive(false);
 
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
@@ -132,8 +140,9 @@ public class PlayerController : MonoBehaviour
         healthText.text = "HP: " + hp;
         if (hp <= 0)
         {
-            DeathScreen.Instance.Show();
-            //Debug.Log("Player died!");
+            if( !secondShot ) DeathScreen.Instance.Show();
+            else StartCoroutine(SecondChanceCountdown());
+           
         }
     }
 
@@ -158,5 +167,37 @@ public class PlayerController : MonoBehaviour
     public void setSpeedMultiplier( float multiple )
     {
         speedMultiplier = multiple;
+    }
+
+    public void secondShotActivate()
+    {
+        secondShot = true;
+    }
+
+    private IEnumerator SecondChanceCountdown()
+    {
+        Vector3 playerPos = transform.position;
+        ZombieSpawner.Instance.KnockbackZombies(playerPos, 15f, 10f);
+
+        Time.timeScale = 0f;
+
+        secondShotCountdownText.gameObject.SetActive(true);
+        secondShotActivatedText.gameObject.SetActive(true);
+
+        int count = 3;
+
+        while (count > 0)
+        {
+            secondShotCountdownText.text = count.ToString();
+            yield return new WaitForSecondsRealtime(1f);
+            count--;
+        }
+
+        secondShotCountdownText.gameObject.SetActive(false);
+        secondShotActivatedText.gameObject.SetActive(false);
+
+        healToMax();
+        secondShot = false;
+        Time.timeScale = 1f;
     }
 }

@@ -58,7 +58,14 @@ public class PlayerSkill : Skill
         }
         else if( secondShot )
         {
+            PlayerController controller = null;
+            GameObject obj = FindRootWithTag("PlayerContainer");
+            if (obj != null)
+            {
+                controller = obj.GetComponentInChildren<PlayerController>();
+            }
 
+            if (controller != null) controller.secondShotActivate();
         }
     }
 

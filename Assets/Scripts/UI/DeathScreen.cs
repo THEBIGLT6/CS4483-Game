@@ -21,6 +21,8 @@ public class DeathScreen : MonoBehaviour
 
     public void Show()
     {
+        GameManager.Instance.resetMultiplier();
+
         gameObject.SetActive(true);
 
         // Freeze game

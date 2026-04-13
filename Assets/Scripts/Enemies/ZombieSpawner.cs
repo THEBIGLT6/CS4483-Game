@@ -268,4 +268,9 @@ public class ZombieSpawner : MonoBehaviour
         if (agent != null) agent.enabled = true;
     }
 
+    public int getCurrentRound()
+    {
+        return m_currentRound;
+    }
+
 }

@@ -26,6 +26,13 @@ public class EnemyController : MonoBehaviour
     private float m_minDelay = 4f;
     private float m_maxDelay = 20f;
 
+    [Header("Attacks")]
+    private bool canAttack = true;
+    private float attackCooldown = 3f;
+    private float lastAttackTime = -Mathf.Infinity;
+    [SerializeField] private float attackRange = 1.75f;
+    [SerializeField] private float attackRadius = 0.75f;
+
     [HideInInspector]
     public NavMeshAgent agent;
     [HideInInspector]
@@ -69,20 +76,16 @@ public class EnemyController : MonoBehaviour
             die();
         }
 
+        if ( canAttack )
+        {
+            TryAttack();
+        }
+
         // for debugging
         //if( Input.GetKeyDown( KeyCode.X ) )
         //{
         //    die();
         //}
-    }
-
-    void OnTriggerEnter(Collider other){
-        if (other.CompareTag("Player")){
-            Debug.Log("Enemy hit the player!");
-            other.GetComponent<PlayerController>().TakeDamage(25);
-            animator.SetTrigger("attack");
-            attack();
-        }
     }
 
     void OnEnable()
@@ -121,6 +124,7 @@ public class EnemyController : MonoBehaviour
     private void die()
     {
         agent.enabled = false;
+        canAttack = false;
         animator.SetTrigger("dead");
     }
 
@@ -152,10 +156,38 @@ public class EnemyController : MonoBehaviour
         m_audioSource.PlayOneShot(clip);
     }
 
-    private void attack()
+    void TryAttack()
     {
+        if (Time.time < lastAttackTime + attackCooldown) return;
+
+        if (Physics.SphereCast(transform.position, attackRadius, transform.forward, out RaycastHit hit, attackRange))
+        {
+            var player = hit.collider.GetComponent<PlayerController>();
+            if (player != null)
+            {
+                triggerAttack(hit.collider);
+                lastAttackTime = Time.time;
+            }
+        }
+    }
+
+    private void triggerAttack(Collider other)
+    {
+        animator.SetTrigger("attack");
         AudioClip clip = m_attackSounds[UnityEngine.Random.Range(0, m_attackSounds.Length)];
         m_audioSource.PlayOneShot(clip);
+    }
+
+    public void performAttack()
+    {
+        if (Physics.SphereCast(transform.position, attackRadius, transform.forward, out RaycastHit hit, attackRange))
+        {
+            var player = hit.collider.GetComponent<PlayerController>();
+            if (player != null)
+            {
+                player.TakeDamage(25);
+            }
+        }
     }
 
     private void applyVolume()
@@ -184,4 +216,24 @@ public class EnemyController : MonoBehaviour
             agent.Move(dir * strength * Time.deltaTime);
         }
     }
+
+    /*
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        Vector3 origin = transform.position + Vector3.up * 1.2f;
+        Vector3 end = origin + transform.forward * attackRange;
+
+        // Draw start + end spheres
+        Gizmos.DrawWireSphere(origin, attackRadius);
+        Gizmos.DrawWireSphere(end, attackRadius);
+
+        // Draw lines connecting them (like a capsule)
+        Gizmos.DrawLine(origin + transform.right * attackRadius, end + transform.right * attackRadius);
+        Gizmos.DrawLine(origin - transform.right * attackRadius, end - transform.right * attackRadius);
+        Gizmos.DrawLine(origin + transform.up * attackRadius, end + transform.up * attackRadius);
+        Gizmos.DrawLine(origin - transform.up * attackRadius, end - transform.up * attackRadius);
+    }
+    */
 }

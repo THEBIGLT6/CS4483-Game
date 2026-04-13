@@ -1824,7 +1824,6 @@ GameObject:
   - component: {fileID: 3603625406075556587}
   - component: {fileID: 7269525453101664401}
   - component: {fileID: 6787076589923150308}
-  - component: {fileID: 6121021333238166681}
   - component: {fileID: 4896142341145353173}
   - component: {fileID: 8098352732992424206}
   - component: {fileID: 4655619829629602601}
@@ -1898,34 +1897,13 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b7284155518ed4dbe918cab5ae88013a, type: 3}
   - {fileID: 8300000, guid: 503cac27b8c114382ba06293cf68902c, type: 3}
   - {fileID: 8300000, guid: 7d76f8d46388e4a88a47beac2f2f0bc6, type: 3}
+  attackRange: 1.5
+  attackRadius: 0.75
   agent: {fileID: 0}
   rb: {fileID: 0}
   mat: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 0}
   animator: {fileID: 0}
---- !u!136 &6121021333238166681
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4127960938634840145}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.4
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!195 &4896142341145353173
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2086,14 +2064,14 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.3
-  m_Height: 2
+  m_Height: 1.7588608
   m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 0.8794304, z: 0}
 --- !u!1 &4466354536818247646
 GameObject:
   m_ObjectHideFlags: 0

@@ -75,6 +75,9 @@ public class PlayerController : MonoBehaviour
             rb.drag = groundDrag;
         else
             rb.drag = 0;
+
+        // for debugging
+        //if (Input.GetKeyDown(KeyCode.K)) DeathScreen.Instance.Show();
     }
 
     private void FixedUpdate()

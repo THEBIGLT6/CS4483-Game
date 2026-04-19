@@ -539,5 +539,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 3
   cooldownTime: 1
-  damage: 3
+  damage: 100
   animator: {fileID: 5854459612709388970}

@@ -1,6 +1,9 @@
+using DG.Tweening;
 using System;
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class EnemyController : MonoBehaviour
 {
@@ -9,6 +12,7 @@ public class EnemyController : MonoBehaviour
     private int moneyReward; 
     private int maxHp;
     private Renderer[] allRenderers;
+    private Color damageColor = new Color( 183f/255f, 34f/255f, 34f / 255f, 0);
 
     [Header("Notifiers")]
     public Action onDeath;
@@ -114,6 +118,28 @@ public class EnemyController : MonoBehaviour
         //Debug.Log($"Enemy {name} took {damage}. HP now: {hp}");
         UpdateColor();
         //Debug.Log(gameObject.name + " HP: " + hp);
+
+        StartCoroutine(DamageAgent());
+    }
+
+    IEnumerator DamageAgent()
+    {
+        //enemy.agent.isStopped = true;
+        mat.DOColor(damageColor, 0.1f);
+
+        yield return new WaitForSeconds(0.1f);
+
+        if (rb != null)
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+
+
+        //enemy.agent.ResetPath();
+        //enemy.agent.isStopped = false;
+        //enemy.mat.DOColor(enemy.m_Color, 0.1f);
+        //enemy.hp -= weapon.damage;
     }
 
     public int getHP()

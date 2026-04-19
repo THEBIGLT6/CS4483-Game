@@ -16,11 +16,11 @@ public class TrapController : MonoBehaviour
     public TrapType type;
     public float cooldownTime; 
     public int damage;
-    private float nextFireTime = 0f;
+    protected float nextFireTime = 0f;
 
     public Animator animator;
 
-    void OnTriggerEnter(Collider other){
+    protected virtual void OnTriggerEnter(Collider other){
         if (Time.time > nextFireTime)
         {
             if (other.CompareTag("Zombie")){
@@ -30,7 +30,6 @@ public class TrapController : MonoBehaviour
                     animator.SetTrigger("triggerTrap");
                 }
             }
-            Debug.Log("Trigger Activated!");
 
             nextFireTime = Time.time + cooldownTime;
         }

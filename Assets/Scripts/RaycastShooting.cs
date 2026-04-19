@@ -11,7 +11,6 @@ public class RaycastShooting : MonoBehaviour
     public Slider reloadSlider;
     private WeaponSO weapon;
     public LayerMask enemyLayer;
-    public Color damageColor;
     public TrailRenderer bulletTracer;
     public ParticleSystem muzzleFlash;
     public Transform muzzlePoint; 
@@ -142,29 +141,9 @@ public class RaycastShooting : MonoBehaviour
                     
                     enemy.rb.AddForce(knockbackDirection * weapon.knockbackForce, ForceMode.Impulse);
                 }
-                StartCoroutine(DamageAgent(enemy));
+                
             }
         }
-    }
-    
-    IEnumerator DamageAgent(EnemyController enemy)
-    {
-        //enemy.agent.isStopped = true;
-        enemy.mat.DOColor(damageColor, 0.1f);
-        
-        yield return new WaitForSeconds(0.1f);
-        
-        if( enemy.rb != null )
-        {
-            enemy.rb.velocity = Vector3.zero;
-            enemy.rb.angularVelocity = Vector3.zero;
-        }
-
-        
-        //enemy.agent.ResetPath();
-        //enemy.agent.isStopped = false;
-        //enemy.mat.DOColor(enemy.m_Color, 0.1f);
-        //enemy.hp -= weapon.damage;
     }
     
     private IEnumerator ReloadGun(WeaponSO weapon)

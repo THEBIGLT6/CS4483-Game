@@ -838,7 +838,6 @@ GameObject:
   - component: {fileID: 7438005604212941533}
   - component: {fileID: 7438005604212941531}
   - component: {fileID: 7438005604212941532}
-  - component: {fileID: -498820066207934738}
   m_Layer: 0
   m_Name: Spike Trap A
   m_TagString: Untagged
@@ -997,18 +996,6 @@ MonoBehaviour:
   audioClipLoopingAttack1: {fileID: 8300000, guid: 432ebed2a7cc3744baba26e9c68a0e38, type: 3}
   audioClipLoopingAttack2: {fileID: 8300000, guid: 39a85e82a24c5644db639103f8529c76, type: 3}
   audioClipRetract: {fileID: 8300000, guid: 467654218df17eb4b8f1abf93f6ab5aa, type: 3}
---- !u!114 &-498820066207934738
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7780095219823958307}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b8fc6dac78ed5847ac997cba548433a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &9124874873117741953
 GameObject:
   m_ObjectHideFlags: 0
